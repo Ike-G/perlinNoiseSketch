@@ -2,18 +2,18 @@
 from random import uniform, randint
 import math as m 
 
-def genGrid(size) : 
-    grid = [[(0,0) for i in range(size)] for j in range(size)]
+def genGrid(s) : 
+    grid = [[(0,0) for i in range(s)] for j in range(s)]
     grid[0][0] = (uniform(-16,16), uniform(-16,16))
     angle = m.atan2(*grid[0][0])%(2*m.pi)
     mod = m.sqrt(grid[0][0][0]**2+grid[0][0][1]**2)
     last = (angle, mod)
     redist = lambda x : 2*m.exp(-(x/8)**2)
-    for i in range(size**2) : 
-        delA = uniform(-m.pi/6, m.pi/6)
-        delM = uniform(-0.4, 0.4)*last[1]
+    for i in range(s**2) : 
+        delA = uniform(-m.pi/4, m.pi/4)
+        delM = uniform(-0.6, 0.6)*last[1]
         last = (delA+last[0], redist(delM+last[1])*(delM+last[1]))
-        c = hilbertCurve(size, i)
+        c = hilbertCurve(s, i)
         grid[c[0]][c[1]] = (last[1]*m.cos(last[0]), last[1]*m.sin(last[0]))
     return grid
 
@@ -56,7 +56,7 @@ class Projectile :
         fx, fy = 0, 0 
         for i in range(len(self.G)) : 
             for j in range(len(self.G)) :  
-                pF = m.exp(-self.proximity(i*self.vDens,j*self.vDens)/8)
+                pF = m.exp(-self.proximity(i*self.vDens,j*self.vDens)/10)
                 # pF = m.exp(-self.proximity(i,j))
                 fx += pF*self.G[i][j][0]/self.vDens
                 fy += pF*self.G[i][j][1]/self.vDens
@@ -67,7 +67,7 @@ class Projectile :
     def rollout(self) : 
         while self.res[0] >= self.x >= 0 and self.res[1] >= self.y >= 0 : 
             self.update()
-            line(self.xH[-1], self.yH[-1], self.x, self.y)
+            #line(self.xH[-1], self.yH[-1], self.x, self.y)
             self.xH.append(self.x)
             self.yH.append(self.y)
             #print("Pos: ",self.x, self.y)
@@ -77,6 +77,7 @@ class Projectile :
     def uA(self, fx, fy) : 
         self.ax += fx 
         self.ay += fy
+        self.ax, self.ay = self.ax*0.95, self.ay*0.95
     
     def uV(self) : 
         self.vx += self.ax 
@@ -108,33 +109,104 @@ class Projectile :
         except : 
             return 0 
 
+def clockwiseRotation(s,v) : 
+    grid = [[[] for i in range(int(s/v))] for j in range(int(s/v))]
+    for i in range(int(s/v)) : 
+        for j in range(int(s/v)) : 
+            angle = m.atan((j+1)/(i+1))-m.pi/2
+            mag = 16/m.sqrt((j+1)**2+(i+1)**2)
+            grid[i][j] = (mag*m.cos(angle), mag*m.sin(angle))
+    return grid
+
+def counterClockwise(s,v) : 
+    grid = [[[] for i in range(int(s/v))] for j in range(int(s/v))]
+    for i in range(int(s/v)) : 
+        for j in range(int(s/v)) : 
+            angle = m.atan((j+1)/(i+1))+m.pi/2
+            mag = 16/m.sqrt((j+1)**2+(i+1)**2)
+            grid[i][j] = (mag*m.cos(angle), mag*m.sin(angle))
+    return grid
+
+def fullCircle(s,v) : 
+    grid = [[[] for i in range(int(s/v))] for j in range(int(s/v))]
+    for i in range(int(s/v)) : 
+        for j in range(int(s/v)) : 
+            angle = m.atan((j-3.5)/(i-3.5))+m.pi/2
+            angle *= abs(angle)
+            mag = 2/(3.5-i)
+            grid[i][j] = (mag*m.cos(angle), mag*m.sin(angle))
+    return grid
 
 def main(side, pNum, vDens) : 
     G = genGrid(side/vDens)
+    #G = fullCircle(side,vDens)
+    print("Finished grid")
+    noFill()
     for i in range(pNum/4) : 
         P = Projectile(G, (side*(i+1)/(pNum/4), side), vDens) 
         P.rollout()
+        beginShape()
+        for i in range(len(P.xH)) : 
+            curveVertex(P.xH[i], P.yH[i])
+        endShape()
     print("25% complete")
     for i in range(pNum/4) : 
         P = Projectile(G, (side*(i+1)/(pNum/4), 0), vDens)
         P.rollout()
+        beginShape()
+        for i in range(len(P.xH)) : 
+            curveVertex(P.xH[i], P.yH[i])
+        endShape()
     print("50% complete")
     for i in range(pNum/4) : 
         P = Projectile(G, (0, side*(i+1)/(pNum/4)), vDens)
         P.rollout()
+        beginShape()
+        for i in range(len(P.xH)) : 
+            curveVertex(P.xH[i], P.yH[i])
+        endShape()
     print("75% complete")
     for i in range(pNum/4) : 
         P = Projectile(G, (side, side*(i+1)/(pNum/4)), vDens)
         P.rollout()
+        beginShape()
+        for i in range(len(P.xH)) : 
+            curveVertex(P.xH[i], P.yH[i])
+        endShape()
+    out = createWriter("lastField.txt")
+    for i in G : 
+        out.print(str(i)+",")
+    out.flush()
+    out.close()
     print("99% complete")
     
+sideLength = 1024
+projectileNumber = 1024
+vectorDensity = 128 
 size(1024, 1024)
 colorMode(HSB)
 background(0, 0, 0)
-stroke(130, 255, 255, 100)
+stroke(0, 255, 255, 50)
 #square = createShape(RECT, 0, 0, 50, 50)
 #square.setFill(color(0,255,255, 128))
 #square.setStroke(False)
 #shape(square, 25, 25)
-main(1024, 1024, 16)
+main(sideLength, projectileNumber, vectorDensity)
+save("0red-v5.png")
+
+
+
 print("100% complete")
+
+# Colours to check 
+# - 130 255 255 100 - Blue 
+# - 85 255 255 100 - Green
+# - 212 255 255 100 - Magenta
+# - 0 255 255 100 - Red
+# - 51 255 255 100 - Yellow
+# - 225 255 255 100 - Pink
+# - 21 255 255 50 - Orange
+
+# Changes to make
+# - Reduce alpha 
+# - Increase 
