@@ -44,11 +44,7 @@ class Projectile :
         self.G = grid 
         self.x = start[0]
         self.y = start[1]
-        # Velocity ranges between (x,y) s.t. -m.pi/6 < arctan(-x/y) < m.pi/6
-        angle = 0
-        mod = 0
-        self.vx = mod*m.cos(angle)/100
-        self.vy = mod*m.sin(angle)/100
+        self.vx, self.vy = 0, 0 
         self.ax, self.ay = 0, 0
         self.xH, self.yH = [self.x], [self.y]
     
@@ -56,8 +52,7 @@ class Projectile :
         fx, fy = 0, 0 
         for i in range(len(self.G)) : 
             for j in range(len(self.G)) :  
-                pF = m.exp(-self.proximity(i*self.vDens,j*self.vDens)/10)
-                # pF = m.exp(-self.proximity(i,j))
+                pF = m.exp(-self.proximity(i*self.vDens,j*self.vDens)/(m.log(self.vDens)*3))
                 fx += pF*self.G[i][j][0]/self.vDens
                 fy += pF*self.G[i][j][1]/self.vDens
         self.uA(fx, fy)
@@ -142,6 +137,7 @@ def main(side, pNum, vDens) :
     #G = fullCircle(side,vDens)
     print("Finished grid")
     noFill()
+    stroke(225, 255, 255, 100)
     for i in range(pNum/4) : 
         P = Projectile(G, (side*(i+1)/(pNum/4), side), vDens) 
         P.rollout()
@@ -150,6 +146,7 @@ def main(side, pNum, vDens) :
             curveVertex(P.xH[i], P.yH[i])
         endShape()
     print("25% complete")
+    stroke(0, 255, 255, 100)
     for i in range(pNum/4) : 
         P = Projectile(G, (side*(i+1)/(pNum/4), 0), vDens)
         P.rollout()
@@ -158,6 +155,7 @@ def main(side, pNum, vDens) :
             curveVertex(P.xH[i], P.yH[i])
         endShape()
     print("50% complete")
+    stroke(225, 255, 255, 100)
     for i in range(pNum/4) : 
         P = Projectile(G, (0, side*(i+1)/(pNum/4)), vDens)
         P.rollout()
@@ -166,6 +164,7 @@ def main(side, pNum, vDens) :
             curveVertex(P.xH[i], P.yH[i])
         endShape()
     print("75% complete")
+    stroke(0, 255, 255, 100)
     for i in range(pNum/4) : 
         P = Projectile(G, (side, side*(i+1)/(pNum/4)), vDens)
         P.rollout()
@@ -180,19 +179,16 @@ def main(side, pNum, vDens) :
     out.close()
     print("99% complete")
     
+    
 sideLength = 1024
 projectileNumber = 1024
 vectorDensity = 128 
 size(1024, 1024)
 colorMode(HSB)
 background(0, 0, 0)
-stroke(0, 255, 255, 50)
-#square = createShape(RECT, 0, 0, 50, 50)
-#square.setFill(color(0,255,255, 128))
-#square.setStroke(False)
-#shape(square, 25, 25)
+stroke(130, 255, 255, 100)
 main(sideLength, projectileNumber, vectorDensity)
-save("0red-v5.png")
+save("225pink0red2-v6.png")
 
 
 
@@ -206,7 +202,3 @@ print("100% complete")
 # - 51 255 255 100 - Yellow
 # - 225 255 255 100 - Pink
 # - 21 255 255 50 - Orange
-
-# Changes to make
-# - Reduce alpha 
-# - Increase 
