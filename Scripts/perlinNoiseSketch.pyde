@@ -187,14 +187,14 @@ vectorDensity = 128
 size(1024, 1024)
 colorMode(HSB)
 
-cs = [0, 51, 130, 212, 225]
+cs = [0, 85, 130, 177, 212, 225]
 for i in cs :
-    #for j in cs : 
-    clear()
-    background(0,0,0)
-    main(sideLength, projectileNumber, vectorDensity, i)
-    fn = str(i)+"-v6.png"
-    save(fn)
+    for j in cs : 
+        clear()
+        background(0,0,0)
+        main(sideLength, projectileNumber, vectorDensity, i, j)
+        fn = str(i)+"-"+str(j)+"-v6.png"
+        save(fn)
 
 
 print("100% complete")
