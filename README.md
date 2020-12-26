@@ -8,22 +8,22 @@ Credit to Tim Holman for his [Generative Art Speedrun Lecture](https://youtu.be/
 
 ## Gallery
 
-![Orange-LightBlue](./Gallery/21-130-v6)
-![Pure Yellow](./Gallery/51yellow-v5-vDen64)
-![Orange-Green](./Gallery/85-21-v6)
-![Green-Pink 1](./Gallery/85-225-v6)
-![Pure Green](./Gallery/85green-v4)
-![LightBlue-Yellow](./Gallery/130-51-v6)
-![LightBlue-Green](./Gallery/130-85-v6)
-![Pure Light Blue 1](./Gallery/130-130-5-v6)
-![LightBlue-Magenta 1](./Gallery/130-212-v6)
-![Pure Light Blue 2](./Gallery/130-v6)
-![Magenta-Red](./Gallery/212-0-v6)
-![LightBlue-Magenta 2](./Gallery/212-130-v6-1)
-![LightBlue-Magenta 3](./Gallery/212-130-v6-2)
-![Magenta-Pink 1](./Gallery/212-225-5-v6)
-![Green-Pink 2](./Gallery/225-85-v6)
-![Magenta-Pink 2](./Gallery/225-212-v6)
+![Orange-LightBlue](./Gallery/21-130-v6.png)
+![Pure Yellow](./Gallery/51yellow-v5-vDen64.png)
+![Orange-Green](./Gallery/85-21-v6.png)
+![Green-Pink 1](./Gallery/85-225-v6.png)
+![Pure Green](./Gallery/85green-v4.png)
+![LightBlue-Yellow](./Gallery/130-51-v6.png)
+![LightBlue-Green](./Gallery/130-85-v6.png)
+![Pure Light Blue 1](./Gallery/130-130-5-v6.png)
+![LightBlue-Magenta 1](./Gallery/130-212-v6.png)
+![Pure Light Blue 2](./Gallery/130-v6.png)
+![Magenta-Red](./Gallery/212-0-v6.png)
+![LightBlue-Magenta 2](./Gallery/212-130-v6-1.png)
+![LightBlue-Magenta 3](./Gallery/212-130-v6-2.png)
+![Magenta-Pink 1](./Gallery/212-225-5-v6.png)
+![Green-Pink 2](./Gallery/225-85-v6.png)
+![Magenta-Pink 2](./Gallery/225-212-v6.png)
 
 ## Vector Field Generation
 
