@@ -52,7 +52,7 @@ class Projectile :
         fx, fy = 0, 0 
         for i in range(len(self.G)) : 
             for j in range(len(self.G)) :  
-                pF = m.exp(-self.proximity(i*self.vDens,j*self.vDens)/(m.log(self.vDens)*3))
+                pF = m.exp(-self.proximity(i*self.vDens,j*self.vDens)/(m.log(self.vDens)*4))
                 fx += pF*self.G[i][j][0]/self.vDens
                 fy += pF*self.G[i][j][1]/self.vDens
         self.uA(fx, fy)
@@ -132,12 +132,13 @@ def fullCircle(s,v) :
             grid[i][j] = (mag*m.cos(angle), mag*m.sin(angle))
     return grid
 
-def main(side, pNum, vDens) : 
+def main(side, pNum, vDens, *cs) : 
+    #G = counterClockwise(side,vDens)
     G = genGrid(side/vDens)
     #G = fullCircle(side,vDens)
     print("Finished grid")
     noFill()
-    stroke(225, 255, 255, 100)
+    stroke(cs[0], 255, 255, 100)
     for i in range(pNum/4) : 
         P = Projectile(G, (side*(i+1)/(pNum/4), side), vDens) 
         P.rollout()
@@ -146,7 +147,7 @@ def main(side, pNum, vDens) :
             curveVertex(P.xH[i], P.yH[i])
         endShape()
     print("25% complete")
-    stroke(0, 255, 255, 100)
+    stroke(cs[-1], 255, 255, 100)
     for i in range(pNum/4) : 
         P = Projectile(G, (side*(i+1)/(pNum/4), 0), vDens)
         P.rollout()
@@ -155,7 +156,7 @@ def main(side, pNum, vDens) :
             curveVertex(P.xH[i], P.yH[i])
         endShape()
     print("50% complete")
-    stroke(225, 255, 255, 100)
+    stroke(cs[0], 255, 255, 100)
     for i in range(pNum/4) : 
         P = Projectile(G, (0, side*(i+1)/(pNum/4)), vDens)
         P.rollout()
@@ -164,7 +165,7 @@ def main(side, pNum, vDens) :
             curveVertex(P.xH[i], P.yH[i])
         endShape()
     print("75% complete")
-    stroke(0, 255, 255, 100)
+    stroke(cs[-1], 255, 255, 100)
     for i in range(pNum/4) : 
         P = Projectile(G, (side, side*(i+1)/(pNum/4)), vDens)
         P.rollout()
@@ -185,11 +186,15 @@ projectileNumber = 1024
 vectorDensity = 128 
 size(1024, 1024)
 colorMode(HSB)
-background(0, 0, 0)
-stroke(130, 255, 255, 100)
-main(sideLength, projectileNumber, vectorDensity)
-save("225pink0red2-v6.png")
 
+cs = [0, 51, 130, 212, 225]
+for i in cs :
+    #for j in cs : 
+    clear()
+    background(0,0,0)
+    main(sideLength, projectileNumber, vectorDensity, i)
+    fn = str(i)+"-v6.png"
+    save(fn)
 
 
 print("100% complete")

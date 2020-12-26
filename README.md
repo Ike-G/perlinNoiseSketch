@@ -23,11 +23,11 @@ In some cases the vector field may be saved using [lastField.txt](./lastField.tx
 
 ### Manual
 
-Alongside the random generation algorithm I have also programmed two other algorithms to force specific curvature patterns. These include the clockwise rotation and the full circle function (although this has been repurposed to create a magnetic field effect by relating the magnitude only to the x-axis). Examples of these are shown below: 
+Alongside the random generation algorithm I have also programmed two other algorithms to force specific curvature patterns. These include the clockwise rotation and the full circle function (although this has been repurposed to create a magnetic field effect by relating the magnitude only to the x-axis). Examples of these are shown below:
 
 ![Clockwise Rotation](./v4/0red-v4-manualRotation.png)
 ![Magnet Effect](./v4/0red-v4-magnet.png)
-![Circle](./0red-v4.png)
+![Circle](./v4/0red-v4.png)
 
 ## Projectile Simulation
 
@@ -48,4 +48,3 @@ For the sake of simplicity I use the HSB system for colour specification, as I d
 ## Rendering
 
 This program uses [Processing.py](https://py.processing.org/) in order to render all images. This is a language using Python 2.7 syntax combined with image rendering capabilities to be ran within the Processing environment. This script was prototyped in pure python using matplotlib.pyplot, and subsequently transferred into the Processing environment after initial testing was complete.
-
