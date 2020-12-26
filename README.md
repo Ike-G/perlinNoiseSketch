@@ -4,7 +4,7 @@ This is a program designed to generate art simulating projectiles reacting to a 
 
 Apologies to anyone who may attempt to fork this repository, nothing in this script was written with the intention of promoting readability, or even being good code (as you may have noticed from the four identical for loops in the main function, or the fact that my main function does not contain the main program). This is my first attempt at generative art, so my main priority was just producing something, as opposed to creating a program to be used repeatedly by others. Consider this repository as documentation of my method more than anything else.
 
-Credit to Tim Holman for his [Generative Art Speedrun Lecture](https://youtu.be/4Se0_w0ISYk) which gave me the idea to fire projectiles through a kind of perlin noise. Admittedly I've used the ideas behind perlin noise fairly loosely here so it's arguable that this repository should be renamed, but it's still present in most of the images so I'm not going to change the title.
+Credit to Tim Holman for his [Generative Art Speedrun Lecture](https://youtu.be/4Se0_w0ISYk) which gave me the idea to fire projectiles through a kind of perlin noise. Admittedly I've used the ideas behind perlin noise fairly loosely here so it's arguable that this repository should be renamed, but it's still present in most of the images so I feel the title is justified at least for the moment.
 
 ## Gallery
 
@@ -52,7 +52,13 @@ Alongside the random generation algorithm I have also programmed two other algor
 
 ### Physics
 
-All projectiles are initalised with zero acceleration at some point on the edge of the vector field with zero acceleration. Upon initialising their rollout they continuously update until their position exceeds the bounds of the image resolution. Veering away from real world physics, the influence of each vector is calculated as an exponential decay relative to the distance between the projectile and the respective vector (`m.exp(-kx)` where `x` is the distance, and `k` is a constant by which the decay is regulated). At each update this is calculated for every vector present in order to provide the current total force accting on the projectile. There is an implied resistance to direction of motion acting on the projectile at all points caused by a set decay of 0.05% per update for the purpose of varying the effects created.
+All projectiles are initalised with zero acceleration at some point on the edge of the vector field with zero acceleration. Upon initialising their rollout they continuously update until their position exceeds the bounds of the image resolution. Veering away from real world physics, the influence of each vector is calculated as an exponential decay relative to the distance between the projectile and the respective vector (`m.exp(-kx)` where `x` is the distance, and `k` is a constant by which the decay is regulated). At each update this is calculated for every vector present in order to provide the current total force accting on the projectile. There is an implied resistance to direction of motion acting on the projectile at all points caused by a set decay of 0.05% per update for the purpose of varying the effects created. For the purpose of creating different effects without introducing mechanics such as collision, the best option is to vary the proximity decay function. This could include some of the following: 
+
+- Inverted sigmoid with buffer constant `b` and decay regulation constant `k`: `1/(m.exp(k*(x-b))+1)` 
+- Inverted linear descent: `(2*b-m.min(2*b,x))/(2*b)`
+- Step-down function: `x >= b`
+- Trigonometric (Note: this produces negative values for high proximity values): `-(m.atan(k*(x-b))+1)/2` 
+
 
 If the force acting on projectiles is too low this results in an excessive number of updates per projectile, which may cause excessively long runtimes. This may be fixed through changes such as decreasing the rate of proximity decay, for this may solve issues caused by local conflicts (hilbert curves may cause jumps around the lower centre resulting in this opposition). Alternatively this may be remedied through varying the vector density, however in my view it is more ideal to relate physics purely to the projectile itself, and thus the proximity decay is decreased relative to the vector density.
 
